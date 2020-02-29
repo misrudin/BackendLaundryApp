@@ -48,8 +48,22 @@ Router.post(
   laundryController.insertData
 );
 
+Router.patch(
+  "/",
+  (req, res, next) => {
+    upload(req, res, err => {
+      if (err) {
+        res.send(err);
+      } else {
+        next();
+      }
+    });
+  },
+  laundryController.editData
+);
+
 Router.get("/", laundryController.getData);
 Router.delete("/", laundryController.deleteData);
-Router.patch("/", laundryController.editData);
+Router.get("/filter", laundryController.filterData);
 
 module.exports = Router;

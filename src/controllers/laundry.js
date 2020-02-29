@@ -97,7 +97,46 @@ module.exports = {
   editData: (req, res) => {
     const id = req.query.id;
     const { name, address, user_id, description, phone } = req.body;
-    if (req.file) {
+    if (!req.file) {
+      const data = {
+        name,
+        address,
+        user_id,
+        description,
+        phone
+      };
+      conn.query(
+        "SELECT * FROM data_laundry where id =?",
+        id,
+        (err, result) => {
+          if (!err) {
+            if (result.length > 0) {
+              process.env.URL = result[0].image;
+              laundryModel
+                .editData(id, data)
+                .then(result => {
+                  const data = {
+                    id,
+                    name,
+                    address,
+                    user_id,
+                    description,
+                    phone,
+                    image: process.env.URL
+                  };
+                  helpers.response(res, data, 200);
+                })
+                .catch(err => {
+                  helpers.response(res, {}, 201, err);
+                  console.log(err);
+                });
+            } else {
+              res.send("Eror!");
+            }
+          }
+        }
+      );
+    } else {
       const data = {
         name,
         address,
@@ -106,69 +145,57 @@ module.exports = {
         phone,
         image: process.env.URL_IMG + `uploads/laundry/${req.file.filename}`
       };
-      laundryModel
-        .editData(id, data)
-        .then(result => {
-          const data = {
-            id,
-            name,
-            address,
-            user_id,
-            description,
-            phone,
-            image: process.env.URL_IMG + `uploads/laundry/${req.file.filename}`
-          };
-          helpers.response(res, data, 200);
-        })
-        .catch(err => {
-          helpers.response(res, {}, 201, err);
-          console.log(err);
-        });
-    } else {
       conn.query(
-        "SELECT image FROM data_laundry where id ?",
+        "SELECT * FROM data_laundry where id =?",
         id,
         (err, result) => {
           if (!err) {
             if (result.length > 0) {
               process.env.URL = result[0].image;
+              laundryModel
+                .editData(id, data)
+                .then(result => {
+                  const data = {
+                    id,
+                    name,
+                    address,
+                    user_id,
+                    description,
+                    phone,
+                    image:
+                      process.env.URL_IMG +
+                      `uploads/laundry/${req.file.filename}`
+                  };
+                  helpers.response(res, data, 200);
+                  const img = process.env.URL.replace(process.env.URL_IMG, "");
+                  fs.unlink(img, err => {
+                    if (err) {
+                      return;
+                    }
+                  });
+                  process.env.URL = "";
+                })
+                .catch(err => {
+                  helpers.response(res, {}, 201, err);
+                });
+            } else {
+              res.send("Eror!");
             }
           }
         }
       );
-      const data = {
-        id,
-        name,
-        address,
-        user_id,
-        description,
-        phone
-      };
-      laundryModel
-        .editData(id, data)
-        .then(result => {
-          const data = {
-            id,
-            name,
-            address,
-            user_id,
-            description,
-            phone,
-            image: process.env.URL
-          };
-          helpers.response(res, data, 200);
-        })
-        .catch(err => {
-          helpers.response(res, {}, 201, err);
-          console.log(err);
-        });
-      const img = process.env.URL.replace(process.env.URL_IMG, "");
-      fs.unlink(img, err => {
-        if (err) {
-          return;
-        }
-      });
-      process.env.URL = "";
     }
+  },
+
+  filterData: (req, res) => {
+    const q = req.query.q;
+    laundryModel
+      .filterData(q)
+      .then(result => {
+        helpers.response(res, result, 200);
+      })
+      .catch(err => {
+        helpers.response(res, {}, res.status, err);
+      });
   }
 };

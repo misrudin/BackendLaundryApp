@@ -97,5 +97,21 @@ module.exports = {
         }
       );
     });
+  },
+
+  filterData: q => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * from data_laundry WHERE name LIKE ? ",
+        "%" + q + "%",
+        (err, result) => {
+          if (!err) {
+            resolve(result);
+          } else {
+            reject(new Error(err));
+          }
+        }
+      );
+    });
   }
 };
