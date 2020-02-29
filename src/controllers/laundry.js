@@ -1,0 +1,174 @@
+const laundryModel = require("../models/laundry");
+const helpers = require("../helpers/helpers");
+const conn = require("../configs/db");
+const fs = require("fs");
+
+module.exports = {
+  insertData: (req, res) => {
+    const { name, address, user_id, description, phone } = req.body;
+    const date = new Date();
+    const data = {
+      name,
+      address,
+      user_id,
+      description,
+      phone,
+      image: process.env.URL_IMG + `uploads/laundry/${req.file.filename}`,
+      created_at: date
+    };
+    laundryModel
+      .insertData(data)
+      .then(result => {
+        const data = {
+          id: result.insertId,
+          name,
+          address,
+          user_id,
+          description,
+          phone,
+          image: process.env.URL_IMG + `uploads/laundry/${req.file.filename}`,
+          created_at: date
+        };
+        helpers.response(res, data, 200);
+      })
+      .catch(err => {
+        helpers.response(res, {}, res.status, err);
+      });
+  },
+  getData: (req, res) => {
+    const page = req.query.page;
+    !page
+      ? laundryModel
+          .getData()
+          .then(result => {
+            helpers.response(res, result, 200);
+          })
+          .catch(err => {
+            helpers.response(res, {}, res.status, err);
+          })
+      : conn.query(
+          "SELECT COUNT(*) as total FROM data_laundry",
+          (err, result) => {
+            const total = result[0].total;
+            if (page > 0) {
+              laundryModel
+                .getPage(page, total)
+                .then(result => {
+                  helpers.response(res, result, 200);
+                })
+                .catch(err => {
+                  helpers.response(res, {}, res.status, err);
+                });
+            }
+          }
+        );
+  },
+
+  deleteData: (req, res) => {
+    const id = req.query.id;
+    laundryModel
+      .deleteData(id)
+      .then(result => {
+        data = {
+          id
+        };
+        helpers.response(res, data, 200);
+      })
+      .catch(err => {
+        helpers.response(res, {}, res.status, err);
+      });
+  },
+
+  deleteData: (req, res) => {
+    const id = req.query.id;
+    laundryModel
+      .deleteData(id)
+      .then(result => {
+        data = {
+          id
+        };
+        helpers.response(res, data, 200);
+      })
+      .catch(err => {
+        helpers.response(res, {}, res.status, err);
+      });
+  },
+
+  editData: (req, res) => {
+    const id = req.query.id;
+    const { name, address, user_id, description, phone } = req.body;
+    if (req.file) {
+      const data = {
+        name,
+        address,
+        user_id,
+        description,
+        phone,
+        image: process.env.URL_IMG + `uploads/laundry/${req.file.filename}`
+      };
+      laundryModel
+        .editData(id, data)
+        .then(result => {
+          const data = {
+            id,
+            name,
+            address,
+            user_id,
+            description,
+            phone,
+            image: process.env.URL_IMG + `uploads/laundry/${req.file.filename}`
+          };
+          helpers.response(res, data, 200);
+        })
+        .catch(err => {
+          helpers.response(res, {}, 201, err);
+          console.log(err);
+        });
+    } else {
+      conn.query(
+        "SELECT image FROM data_laundry where id ?",
+        id,
+        (err, result) => {
+          if (!err) {
+            if (result.length > 0) {
+              process.env.URL = result[0].image;
+            }
+          }
+        }
+      );
+      const data = {
+        id,
+        name,
+        address,
+        user_id,
+        description,
+        phone
+      };
+      laundryModel
+        .editData(id, data)
+        .then(result => {
+          const data = {
+            id,
+            name,
+            address,
+            user_id,
+            description,
+            phone,
+            image: process.env.URL
+          };
+          helpers.response(res, data, 200);
+        })
+        .catch(err => {
+          helpers.response(res, {}, 201, err);
+          console.log(err);
+        });
+      const img = process.env.URL.replace(process.env.URL_IMG, "");
+      fs.unlink(img, err => {
+        if (err) {
+          return;
+        }
+      });
+      process.env.URL = "";
+    }
+  }
+};
