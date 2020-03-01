@@ -221,9 +221,8 @@ module.exports = {
   },
   joinData: (req, res) => {
     const id = req.query.id;
-    const category = req.query.category;
     laundryModel
-      .joinData(id, category)
+      .joinData(id)
       .then(result => {
         helpers.response(res, result, 200);
       })
