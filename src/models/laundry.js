@@ -59,7 +59,7 @@ module.exports = {
   },
 
   getPage: (page, total) => {
-    const dataPage = 2; // jumlah data per halaman
+    const dataPage = 10; // jumlah data per halaman
 
     const totalPage = total / dataPage; // mengitung jumlah halaman
 
@@ -73,7 +73,7 @@ module.exports = {
           if (!err) {
             const thisPage = Math.ceil(totalPage);
             if (page <= thisPage) {
-              resolve([page, `Curren Page: ${page}`, result]);
+              resolve([thisPage, `Curren Page: ${page}`, result]);
             }
           } else {
             reject(new Error(err));
@@ -128,5 +128,32 @@ module.exports = {
         }
       );
     });
-  }
+  },
+  status:(id,data)=>{
+    return new Promise((resove,reject)=>{
+      connection.query("UPDATE data_laundry SET ? WERE id=?",[data,id],(err,result)=>{
+        if(!err){
+          resolve(result)
+        }else{
+          reject(new Error(err))
+        }
+      })
+    })
+  },
+
+  getDetail: id => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM data_laundry WHERE id = ?",
+        id,
+        (err, result) => {
+          if (!err) {
+            resolve(result);
+          } else {
+            reject(new Error(err));
+          }
+        }
+      );
+    });
+  },
 };
