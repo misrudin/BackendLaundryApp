@@ -65,5 +65,6 @@ Router.patch(
 Router.get("/", laundryController.getData);
 Router.delete("/", laundryController.deleteData);
 Router.get("/filter", laundryController.filterData);
+Router.get("/join", laundryController.joinData);
 
 module.exports = Router;

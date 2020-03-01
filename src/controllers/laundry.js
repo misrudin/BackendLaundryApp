@@ -197,5 +197,17 @@ module.exports = {
       .catch(err => {
         helpers.response(res, {}, res.status, err);
       });
+  },
+  joinData: (req, res) => {
+    const id = req.query.id;
+    const category = req.query.category;
+    laundryModel
+      .joinData(id, category)
+      .then(result => {
+        helpers.response(res, result, 200);
+      })
+      .catch(err => {
+        helpers.response(res, {}, res.status, err);
+      });
   }
 };
