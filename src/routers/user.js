@@ -65,8 +65,7 @@ Router.patch(
 );
 
 Router.post("/login", UserController.login);
-Router.get("/", auth.verify, UserController.getUser);
-Router.get("/:id_users", auth.verify, UserController.detailUser);
+Router.get("/",UserController.getUser);
 Router.delete("/:id_users", UserController.deleteUsers);
 Router.patch("/UPassword/:id_users", UserController.editPassword);
 Router.get("/cektoken", auth.verify);
