@@ -45,9 +45,9 @@ module.exports = {
             })
         })
     },
-    getUsersDetail: id_users => {
+    getUsersDetail: id => {
         return new Promise((resolve, reject) => {
-            connection.query('SELECT * FROM user WHERE id = ?', id_users, (err, result) => {
+            connection.query('SELECT * FROM user WHERE id = ?', id, (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {

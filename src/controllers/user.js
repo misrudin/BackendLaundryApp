@@ -64,6 +64,7 @@ module.exports = {
               if (resPass) {
                 const token = jwt.sign({ result }, process.env.PRIVATE_KEY);
                 res.json({
+                  id:result[0].id,
                   token: token
                 });
               } else {
@@ -80,11 +81,10 @@ module.exports = {
     );
   },
   detailUser: (req, res) => {
-    const id_users = req.params.id_users;
+    const id = req.query.id;
     userModel
-      .getUsersDetail(id_users)
+      .getUsersDetail(id)
       .then(result => {
-        // res.json(result)
         if (result.length <= 0) {
           miscHelper.response(res, {}, 201, "User Not Found!");
         } else {
