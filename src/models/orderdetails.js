@@ -14,7 +14,7 @@ module.exports = {
     }, 
     getOrderDetailById: (id) => {
         return new Promise((resolve, reject) => {
-            connection.query("SELECT detail_orders.id,detail_orders.qty,detail_orders.price as total,features_laundry.name,features_laundry.price as hargaFeature FROM detail_orders JOIN features_laundry ON features_laundry.id=detail_orders.id_features WHERE detail_orders.id_orders=?",id, (err, result) => {
+            connection.query("SELECT detail_orders.id,detail_orders.qty,detail_orders.price as total,features_laundry.name,features_laundry.price as hargaFeature,features_laundry.category FROM detail_orders JOIN features_laundry ON features_laundry.id=detail_orders.id_features WHERE detail_orders.id_orders=?",id, (err, result) => {
                 if (!err) {
                     resolve(result);
                 } else {
