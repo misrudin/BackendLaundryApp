@@ -5,7 +5,7 @@ const fs = require("fs");
 
 module.exports = {
   insertData: (req, res) => {
-    const { name, address, user_id, description, phone,minimum,open,close } = req.body;
+    const { name, address, user_id, description, phone } = req.body;
     const date = new Date();
     const data = {
       name,
@@ -15,11 +15,8 @@ module.exports = {
       phone,
       image: process.env.URL_IMG + `uploads/laundry/${req.file.filename}`,
       created_at: date,
-      minimum,
       status:'Online',
       rating:0,
-      open,
-      close
     };
     laundryModel
       .insertData(data)
@@ -33,10 +30,7 @@ module.exports = {
           phone,
           image: process.env.URL_IMG + `uploads/laundry/${req.file.filename}`,
           created_at: date,
-          minimum,
       online:'Online',
-      open,
-      close
         };
         helpers.response(res, data, 200);
       })
@@ -105,7 +99,7 @@ module.exports = {
 
   editData: (req, res) => {
     const id = req.query.id;
-    const { name, address, user_id, description, phone,minimum,open,close } = req.body;
+    const { name, address, user_id, description, phone } = req.body;
     if (!req.file) {
       const data = {
         name,
@@ -113,9 +107,6 @@ module.exports = {
         user_id,
         description,
         phone,
-        minimum,
-        open,
-        close
       };
       conn.query(
         "SELECT * FROM data_laundry where id =?",
@@ -135,9 +126,6 @@ module.exports = {
                     description,
                     phone,
                     image: process.env.URL,
-                    minimum,
-                    open,
-                    close
                   };
                   helpers.response(res, data, 200);
                 })
@@ -159,9 +147,6 @@ module.exports = {
         description,
         phone,
         image: process.env.URL_IMG + `uploads/laundry/${req.file.filename}`,
-        minimum,
-        open,
-        close
       };
       conn.query(
         "SELECT * FROM data_laundry where id =?",
@@ -183,9 +168,6 @@ module.exports = {
                     image:
                       process.env.URL_IMG +
                       `uploads/laundry/${req.file.filename}`,
-                      minimum,
-                      open,
-                      close
                   };
                   helpers.response(res, data, 200);
                   const img = process.env.URL.replace(process.env.URL_IMG, "");
