@@ -31,9 +31,9 @@ const upload = multer({
       });
     }
   },
-  limits: {
-    fileSize: 1024 * 1024 * 2
-  }
+  // limits: {
+  //   fileSize: 1024 * 1024 * 2
+  // }
 }).single("image");
 
 Router.post(
