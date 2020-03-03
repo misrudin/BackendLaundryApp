@@ -102,7 +102,7 @@ module.exports = {
   filterData: q => {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * from data_laundry WHERE name LIKE ? or where address Like ?",
+        "SELECT * from data_laundry WHERE name LIKE ? or address Like ?",
         ["%" + q + "%","%" + q + "%"],
         (err, result) => {
           if (!err) {
