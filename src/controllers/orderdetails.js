@@ -4,11 +4,21 @@ const bodyParser = require('body-parser');
 
 module.exports = {
     getOrderDetail: (req, res) => {
+        const id=req.query.id
+        if(id){
+            orderDetailModel.getOrderDetailById(id)
+            .then((result) => {
+                miscHelper.response(res, result, 200);
+            })
+            .catch(err => console.log(err));
+        }else{
+
         orderDetailModel.getOrderDetail()
             .then((result) => {
                 miscHelper.response(res, result, 200);
             })
             .catch(err => console.log(err));
+        }
     },
     insertOrderDetail: (req, res) => {
         const { id_orders, id_features, description, qty, price } = req.body;

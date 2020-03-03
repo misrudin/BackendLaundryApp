@@ -12,6 +12,17 @@ module.exports = {
             });
         });
     },
+      getById: (id,status) => {
+        return new Promise((resolve, reject) => {
+            connection.query("SELECT data_laundry.name, orders.* FROM data_laundry JOIN orders on data_laundry.id=orders.laundry_id WHERE orders.user_id=? and orders.status=?",[id,status], (err, result) => {
+                if (!err) {
+                    resolve(result);
+                } else {
+                    reject(new Error(err));
+                }
+            });
+        });
+    },
     insertOrder: (data) => {
         return new Promise((resolve, reject) => {
             connection.query("INSERT INTO orders SET ?", data, (err, result) => {

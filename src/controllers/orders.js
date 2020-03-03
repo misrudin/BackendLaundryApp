@@ -4,21 +4,32 @@ const bodyParser = require('body-parser');
 
 module.exports = {
     getOrder: (req, res) => {
-        orderModel.getOrder()
+        const id=req.query.id
+        const status=req.query.status
+        if(id){
+             orderModel.getById(id,status)
             .then((result) => {
                 miscHelper.response(res, result, 200);
             })
             .catch(err => console.log(err));
+        }else{
+             orderModel.getOrder()
+            .then((result) => {
+                miscHelper.response(res, result, 200);
+            })
+            .catch(err => console.log(err));
+        }
+       
     },
     insertOrder: (req, res) => {
-        const { user_id, laundry_id, date, price, status, date_done } = req.body;
+        const { user_id, laundry_id, price, status } = req.body;
+        const date = new Date();
         const data = {
             user_id,
             laundry_id,
             date,
             price,
             status,
-            date_done,
         };
         orderModel.insertOrder(data)
             .then((result) => {
@@ -37,7 +48,7 @@ module.exports = {
             status,
             date_done,
         };
-        const id = req.params.id;
+        const id = req.query.id;
         orderModel.updateOrder(data, id)
             .then((result) => {
                 const dataResponse = {id, ...data}
@@ -46,7 +57,7 @@ module.exports = {
             .catch(err => console.log(err));
     },
     deleteOrder: (req, res) => {
-        const id = req.params.id;
+        const id = req.query.id;
         orderModel.deleteOrder(id)
             .then((result) => {
                 miscHelper.response(res, id, 200);

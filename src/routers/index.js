@@ -7,7 +7,7 @@ const user = require('./user');
 const Router = express.Router();
 
 Router.use('/orders', orders);
-Router.use('/orders/detail', orderdetails);
+Router.use('/detail', orderdetails);
 Router.use("/laundry", laundry);
 Router.use("/features", features);
 Router.use('/user', user);
