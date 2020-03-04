@@ -68,5 +68,6 @@ Router.post("/login", UserController.login);
 Router.get("/", UserController.getUser);
 Router.delete("/:id_users", UserController.deleteUsers);
 Router.patch("/UPassword/:id_users", UserController.editPassword);
+Router.patch("/role", UserController.editRole);
 Router.get("/cektoken", auth.verify);
 module.exports = Router;

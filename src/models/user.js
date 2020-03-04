@@ -88,5 +88,16 @@ module.exports = {
                 }
             })
         })
+    },
+    editRole: (id, data) => {
+        return new Promise((resolve, reject) => {
+            connection.query('UPDATE user SET role = ? WHERE user.id = ?', [data, id], (err, result) => {
+                if (!err) {
+                    resolve(result)
+                } else {
+                    reject(new Error(err))
+                }
+            })
+        })
     }
 }

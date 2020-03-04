@@ -204,5 +204,19 @@ module.exports = {
           miscHelper.response(res, {}, 201, "An Error Has Occured!");
         });
     }
-  }
+  },
+  editRole: (req, res) => {
+    const id = req.query.id;
+    const data = {
+      role:2
+    };
+      userModel
+        .editRole(id, data)
+        .then(result => {
+          miscHelper.response(res, data, 200, "Role Update Success!");
+        })
+        .catch(err => {
+          miscHelper.response(res, {}, 201, "An Error Has Occured!");
+        });
+    }
 };
