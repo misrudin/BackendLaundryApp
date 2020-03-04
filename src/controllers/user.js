@@ -76,10 +76,11 @@ if(id){
             const passwordHash = result[0].password;
             bcrypt.compare(passwordInput, passwordHash, function(err, resPass) {
               if (resPass) {
-                const token = jwt.sign({ result }, process.env.PRIVATE_KEY);
+                const token = jwt.sign({ result[0].id,result[0].username }, process.env.PRIVATE_KEY);
                 res.json({
                   id:result[0].id,
-                  token: token
+                  token: token,
+                  role:result[0].role
                 });
               } else {
                 res.json({ msg: "Password Wrong!" });
