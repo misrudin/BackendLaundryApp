@@ -240,5 +240,17 @@ module.exports = {
     })
     .catch(err => {
       helpers.response(res, {}, 201, err);
-    });  }
+    });  
+  },
+  getMyLaundry:(req,res)=>{
+    const id =req.query.id
+    
+    laundryModel.getMyLaundry(id)
+    .then(result => {
+      helpers.response(res, result, 200);
+    })
+    .catch(err => {
+      helpers.response(res, {}, 201, err);
+    });  
+  },
 };

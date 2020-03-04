@@ -156,4 +156,19 @@ module.exports = {
       );
     });
   },
+  getMyLaundry: id => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM data_laundry WHERE data_laundry.user_id = ?",
+        id,
+        (err, result) => {
+          if (!err) {
+            resolve(result);
+          } else {
+            reject(new Error(err));
+          }
+        }
+      );
+    });
+  },
 };

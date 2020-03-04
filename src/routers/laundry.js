@@ -68,4 +68,5 @@ Router.get("/filter", laundryController.filterData);
 Router.get("/join", laundryController.joinData);
 Router.patch('/status', laundryController.status)
 Router.get('/detail',laundryController.getDetail)
+Router.get('/mylaundry',laundryController.getMyLaundry)
 module.exports = Router;
