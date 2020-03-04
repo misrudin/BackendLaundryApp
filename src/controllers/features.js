@@ -14,12 +14,11 @@ module.exports = {
       });
   },
   insertData: (req, res) => {
-    const { id_laundry, name, description, price, category } = req.body;
+    const { id_laundry, name, price, category } = req.body;
 
     const data = {
       id_laundry,
       name,
-      description,
       price,
       category
     };
@@ -30,7 +29,6 @@ module.exports = {
           id: result.insertID,
           id_laundry,
           name,
-          description,
           price,
           category
         };
@@ -42,12 +40,11 @@ module.exports = {
   },
   editData: (req, res) => {
     const id = req.query.id;
-    const { id_laundry, name, description, price, category } = req.body;
+    const { id_laundry, name, price, category } = req.body;
 
     const data = {
       id_laundry,
       name,
-      description,
       price,
       category
     };
@@ -58,9 +55,29 @@ module.exports = {
           id,
           id_laundry,
           name,
-          description,
           price,
           category
+        };
+        helpers.response(res, data, 200);
+      })
+      .catch(err => {
+        helpers.response(res, {}, 201, err);
+        console.log(err);
+      });
+  },
+editPrice: (req, res) => {
+    const id = req.query.id;
+    const { price } = req.body;
+
+    const data = {
+      price,
+    };
+    featuresModel
+      .editData(id, data)
+      .then(result => {
+        const data = {
+          id,
+          price,
         };
         helpers.response(res, data, 200);
       })
