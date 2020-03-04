@@ -144,7 +144,7 @@ module.exports = {
   getDetail: id => {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * FROM data_laundry WHERE data_laundry.id_user = ?",
+        "SELECT * FROM data_laundry WHERE data_laundry.user_id = ?",
         id,
         (err, result) => {
           if (!err) {
