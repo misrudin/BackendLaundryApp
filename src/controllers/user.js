@@ -7,26 +7,26 @@ const bcrypt = require("bcryptjs");
 
 module.exports = {
   getUser: (req, res) => {
-const id = req.query.id;
-if(id){
-    userModel
-      .getUsersDetail(id)
-      .then(result => {
-        if (result.length <= 0) {
-          miscHelper.response(res, {}, 201, "User Not Found!");
-        } else {
-          miscHelper.response(res, result, 200, "Success");
-        }
-      })
-      .catch(err => console.log(err));
-}else{
- userModel
-      .getUsers()
-      .then(result => {
-        miscHelper.response(res, result, 200, "");
-      })
-      .catch(err => console.log(err));
-}
+    const id = req.query.id;
+    if (id) {
+      userModel
+        .getUsersDetail(id)
+        .then(result => {
+          if (result.length <= 0) {
+            miscHelper.response(res, {}, 201, "User Not Found!");
+          } else {
+            miscHelper.response(res, result, 200, "Success");
+          }
+        })
+        .catch(err => console.log(err));
+    } else {
+      userModel
+        .getUsers()
+        .then(result => {
+          miscHelper.response(res, result, 200, "");
+        })
+        .catch(err => console.log(err));
+    }
   },
   register: (req, res) => {
     const { email, password, username, address, phone } = req.body;
@@ -76,11 +76,11 @@ if(id){
             const passwordHash = result[0].password;
             bcrypt.compare(passwordInput, passwordHash, function(err, resPass) {
               if (resPass) {
-                const token = jwt.sign({ result[0].id,result[0].username }, process.env.PRIVATE_KEY);
+                const token = jwt.sign({ result }, process.env.PRIVATE_KEY);
                 res.json({
-                  id:result[0].id,
-                  token: token,
-                  role:result[0].role
+                  id: result[0].id,
+                  role: result[0].role,
+                  token: token
                 });
               } else {
                 res.json({ msg: "Password Wrong!" });

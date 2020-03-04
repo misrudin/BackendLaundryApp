@@ -30,7 +30,7 @@ const upload = multer({
         message: "Only image Allowed!"
       });
     }
-  },
+  }
   // limits: {
   //   fileSize: 1024 * 1024 * 2
   // }
@@ -65,7 +65,7 @@ Router.patch(
 );
 
 Router.post("/login", UserController.login);
-Router.get("/",UserController.getUser);
+Router.get("/", UserController.getUser);
 Router.delete("/:id_users", UserController.deleteUsers);
 Router.patch("/UPassword/:id_users", UserController.editPassword);
 Router.get("/cektoken", auth.verify);
