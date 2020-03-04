@@ -22,14 +22,14 @@ module.exports = {
        
     },
     insertOrder: (req, res) => {
-        const { user_id, laundry_id, price, status } = req.body;
+        const { user_id, laundry_id, price } = req.body;
         const date = new Date();
         const data = {
             user_id,
             laundry_id,
             date,
             price,
-            status,
+            status:0,
         };
         orderModel.insertOrder(data)
             .then((result) => {
