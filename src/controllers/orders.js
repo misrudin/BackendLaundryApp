@@ -30,6 +30,7 @@ module.exports = {
             date,
             price,
             status:0,
+            date_done:date,
         };
         orderModel.insertOrder(data)
             .then((result) => {
